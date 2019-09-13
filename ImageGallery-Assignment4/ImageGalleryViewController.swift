@@ -18,17 +18,33 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
     @IBAction func PinchGesture(_ sender: UIPinchGestureRecognizer) {
 //        var newCellWidth: CGFloat = flowLayout!.itemSize.width
 //        var newCellHeight: CGFloat = flowLayout!.itemSize.height
-        
-        if sender.scale < 1 {
-            flowLayout!.itemSize.width += 100
-            flowLayout!.itemSize.height += 100
+        if sender.state == .changed {
+            if sender.scale > 1 {
+//                flowLayout!.itemSize.width += 100
+//                flowLayout!.itemSize.height += 100
+                for cell in GalleryCollectionView.visibleCells as [UICollectionViewCell] {
+                    if ((cell.frame.size.width+10) * 3) <= view.frame.size.width
+                    {
+                        cell.frame.size.width += 10
+                        cell.frame.size.height += 10
+                    }
+                }
+            }
+            else {
+//                flowLayout!.itemSize.width -= 100
+//                flowLayout!.itemSize.height -= 100
+                for cell in GalleryCollectionView.visibleCells as [UICollectionViewCell] {
+                    if (cell.frame.size.width-10) >= 50
+                    {
+                        cell.frame.size.width -= 10
+                        cell.frame.size.height -= 10
+                    }
+                }
+            }
+            
+//            flowLayout?.invalidateLayout()
+            GalleryCollectionView.reloadData()
         }
-        else {
-            flowLayout!.itemSize.width -= 100
-            flowLayout!.itemSize.height -= 100
-        }
-        
-        flowLayout?.invalidateLayout()
 //        let cellSize = CGSize(width: newCellWidth, height: newCellHeight)
 //        currentCellSize = cellSize
     }
@@ -62,8 +78,8 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let imageWidth = flowLayout!.itemSize.width
-        let imageHeight = flowLayout!.itemSize.height
+        let imageWidth = GalleryImages[indexPath.item].size.width
+        let imageHeight = GalleryImages[indexPath.item].size.height
 
         let cellWidth: CGFloat = view.frame.size.width / 4
         let aspectRatio: CGFloat = imageWidth / imageHeight
