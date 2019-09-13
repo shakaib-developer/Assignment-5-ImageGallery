@@ -15,51 +15,22 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
         return GalleryCollectionView?.collectionViewLayout as? UICollectionViewFlowLayout
     }
     
+    lazy var cellWidth: CGFloat = view.frame.size.width / 4
+    var scale : CGFloat = 1
     @IBAction func PinchGesture(_ sender: UIPinchGestureRecognizer) {
-//        var newCellWidth: CGFloat = flowLayout!.itemSize.width
-//        var newCellHeight: CGFloat = flowLayout!.itemSize.height
         if sender.state == .changed {
-            if sender.scale > 1 {
-//                flowLayout!.itemSize.width += 100
-//                flowLayout!.itemSize.height += 100
-                for cell in GalleryCollectionView.visibleCells as [UICollectionViewCell] {
-                    if ((cell.frame.size.width+10) * 3) <= view.frame.size.width
-                    {
-                        cell.frame.size.width += 10
-                        cell.frame.size.height += 10
-                    }
-                }
+            if (sender.scale > scale) {
+                // Zoom in
+                cellWidth += 10
             }
-            else {
-//                flowLayout!.itemSize.width -= 100
-//                flowLayout!.itemSize.height -= 100
-                for cell in GalleryCollectionView.visibleCells as [UICollectionViewCell] {
-                    if (cell.frame.size.width-10) >= 50
-                    {
-                        cell.frame.size.width -= 10
-                        cell.frame.size.height -= 10
-                    }
-                }
+            else if ((cellWidth - 10) > 50) {
+                // Zoom out
+                cellWidth -= 10
             }
-            
-//            flowLayout?.invalidateLayout()
-            GalleryCollectionView.reloadData()
+            scale = sender.scale
+            flowLayout?.invalidateLayout()
         }
-//        let cellSize = CGSize(width: newCellWidth, height: newCellHeight)
-//        currentCellSize = cellSize
     }
-    
-//    var currentCellSize: CGSize! {
-//        didSet {
-//            let layout = UICollectionViewFlowLayout()
-//            layout.scrollDirection = .vertical
-//            layout.itemSize = currentCellSize
-//            layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-//            layout.minimumLineSpacing = 1.0
-//            layout.minimumInteritemSpacing = 1.0
-//            GalleryCollectionView.setCollectionViewLayout(layout, animated: false)
-//        }
-//    }
     
     var GalleryImages:[UIImage] = [UIImage]()
     
@@ -81,8 +52,7 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
         let imageWidth = GalleryImages[indexPath.item].size.width
         let imageHeight = GalleryImages[indexPath.item].size.height
 
-        let cellWidth: CGFloat = view.frame.size.width / 4
-        let aspectRatio: CGFloat = imageWidth / imageHeight
+        let aspectRatio: CGFloat = imageHeight / imageWidth
 
         return CGSize(width: cellWidth, height: aspectRatio * cellWidth)
     }
