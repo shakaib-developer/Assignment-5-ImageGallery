@@ -20,7 +20,7 @@ class ImageGalleryTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section != 0 { return "" }
+        if section == 0 { return "" }
         else { return "Recently Deleted" }
     }
         
@@ -71,18 +71,39 @@ class ImageGalleryTableViewController: UITableViewController {
                 let temp = galleriesInUse[indexPath.row]
                 galleriesRecentlyDeleted.append(temp)
                 galleriesInUse.remove(at: indexPath.row)
-                tableView.reloadData()
+                tableView.reloadSections([0,1], with: .bottom)
             }
             else {
                 
                 galleriesRecentlyDeleted.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
+                
             }
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
-
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
+    {
+        if indexPath.section != 0
+        {
+            let closeAction = UIContextualAction(style: .normal, title:  "Recover", handler: { [weak self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+                
+                let temp = self?.galleriesRecentlyDeleted[indexPath.row]
+                self?.galleriesInUse.append(temp!)
+                self?.galleriesRecentlyDeleted.remove(at: indexPath.row)
+                tableView.reloadSections([0,1], with: .top)
+                
+                success(true)
+            })
+//            closeAction.image = UIImage(named: "tick")
+//            closeAction.backgroundColor = .purple
+            
+            return UISwipeActionsConfiguration(actions: [closeAction])
+        }
+        return nil
+    }
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
