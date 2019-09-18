@@ -48,14 +48,21 @@ class ImageGalleryTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell!
+        let cell: ImageGalleryTableViewCell!
         if indexPath.section == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: "GalleriesInUse", for: indexPath)
-            cell.textLabel?.text = galleriesInUse[indexPath.row]
+            cell = tableView.dequeueReusableCell(withIdentifier: "GalleriesInUse", for: indexPath) as? ImageGalleryTableViewCell
+            
+            cell.galleryNameTextField.text = galleriesInUse[indexPath.row]
+            cell.tag = 0
+            
+            cell.updateModel = {
+                self.galleriesInUse[indexPath.item] = cell.galleryNameTextField.text!
+            }
         }
         else {
-            cell = tableView.dequeueReusableCell(withIdentifier: "GalleriesInUse", for: indexPath)
-            cell.textLabel?.text = galleriesRecentlyDeleted[indexPath.row]
+            cell = tableView.dequeueReusableCell(withIdentifier: "GalleriesInUse", for: indexPath) as? ImageGalleryTableViewCell
+            cell.galleryNameTextField.text = galleriesRecentlyDeleted[indexPath.row]
+            cell.tag = 1
         }
         return cell
     }
@@ -111,6 +118,7 @@ class ImageGalleryTableViewController: UITableViewController {
                 let temp = self?.galleriesRecentlyDeleted[indexPath.row]
                 self?.galleriesInUse.append(temp!)
                 self?.galleriesRecentlyDeleted.remove(at: indexPath.row)
+                tableView.cellForRow(at: indexPath)?.tag = 0
                 tableView.reloadSections([0,1], with: .top)
                 
                 success(true)
