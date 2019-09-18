@@ -16,12 +16,7 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let nc = self.splitViewController?.viewControllers[0] as! UINavigationController
-        let igtvc = nc.viewControllers[0] as? ImageGalleryTableViewController
-        if (igtvc?.tableView.indexPathForSelectedRow) != nil// = self.GalleryImages
-        {
-            igtvc?.tableView.isHidden = false
-        }
+        EnableOrDisableTableView()
     }
     
     lazy var cellWidth: CGFloat = view.frame.size.width / 4
@@ -52,39 +47,25 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
         }
     }
     
-    var cell: ImageCollectionViewCell!
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if let c = GalleryCollectionView.indexPathsForSelectedItems?.first
-        {
-            cell = GalleryCollectionView.cellForItem(at: c) as? ImageCollectionViewCell
-            
-            if let cell = cell {
-                if let imageVC = segue.destination.contents as? ImageZoomViewController {
-                    imageVC.image = cell.imageViewInCell.image
-                    
-                    let nc = self.splitViewController?.viewControllers[0] as! UINavigationController
-                    let igtvc = nc.viewControllers[0] as? ImageGalleryTableViewController
-                    if (igtvc?.tableView.indexPathForSelectedRow) != nil// = self.GalleryImages
-                    {
-                        igtvc?.tableView.isHidden = true
-                    }
-                    
-                }
-            }
-        }
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("item at \(indexPath) tapped, segue = ImageZoomViewController")
 
-        cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
-//        let yourViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImageZoomViewController") as! ImageZoomViewController
-//        let cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
-//        yourViewController.image = cell?.imageViewInCell.image
-//
-//        self.present(yourViewController, animated: true, completion: nil)
+        let cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
+        
+        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageZoomViewController") as? ImageZoomViewController
+        vc?.image = cell?.imageViewInCell.image
+        self.navigationController?.pushViewController(vc!, animated: true)
+        
+        EnableOrDisableTableView()
+    }
+    
+    private func EnableOrDisableTableView() {
+        let nc = self.splitViewController?.viewControllers[0] as! UINavigationController
+        let igtvc = nc.viewControllers[0] as? ImageGalleryTableViewController
+        if (igtvc?.tableView.indexPathForSelectedRow) != nil
+        {
+            igtvc?.tableView.isHidden = !(igtvc?.tableView.isHidden)!
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
