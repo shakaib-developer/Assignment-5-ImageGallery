@@ -10,11 +10,16 @@ import UIKit
 
 class ImageGalleryTableViewController: UITableViewController {
 
-    var galleriesInUse = [String]()
+    var galleriesInUse = ["Gallery"]
     var galleriesRecentlyDeleted = [String]()
     
-    // MARK: - Table view data source
-
+    var galleriesDictionary = [0: [UIImage]()]
+    
+//    // MARK: - Table view data source
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -29,6 +34,18 @@ class ImageGalleryTableViewController: UITableViewController {
         else { return galleriesRecentlyDeleted.count }
     }
 
+//    let vc = self.splitViewController?.viewControllers[0] as! UINavigationController
+//    print("vc = \(vc.viewControllers[0])")
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("indexpath.item = \(indexPath.item)")
+        if indexPath.section == 0 {
+            let nc = self.splitViewController?.viewControllers[1] as! UINavigationController
+            let igvc = nc.viewControllers[0] as? ImageGalleryViewController
+            igvc?.GalleryImages = galleriesDictionary[indexPath.item]!
+            igvc?.GalleryCollectionView.reloadData()
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell!
@@ -45,7 +62,8 @@ class ImageGalleryTableViewController: UITableViewController {
 
     @IBAction func AddNewGalleryClicked(_ sender: UIBarButtonItem) {
         galleriesInUse += ["Gallery".madeUnique(withRespectTo: galleriesInUse)]
-        tableView.reloadData()
+        galleriesDictionary[galleriesInUse.count - 1] = [UIImage]()
+        tableView.reloadSections([0,1], with: .fade)
     }
     
     override func viewWillLayoutSubviews() {

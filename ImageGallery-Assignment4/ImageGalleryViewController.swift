@@ -32,8 +32,17 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
         }
     }
     
-    var GalleryImages:[UIImage] = [UIImage]()
-    
+    var GalleryImages:[UIImage] = [UIImage]() {
+        didSet {
+            let nc = self.splitViewController?.viewControllers[0] as! UINavigationController
+            let igtvc = nc.viewControllers[0] as? ImageGalleryTableViewController
+            if let indexPath = igtvc?.tableView.indexPathForSelectedRow// = self.GalleryImages
+            {
+                igtvc?.galleriesDictionary[indexPath.item] = GalleryImages
+            }
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return GalleryImages.count
     }

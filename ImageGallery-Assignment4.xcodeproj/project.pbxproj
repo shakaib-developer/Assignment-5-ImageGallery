@@ -64,9 +64,9 @@
 				10381882232A45A500531F02 /* Main.storyboard */,
 				10381893232A5E4800531F02 /* Utilities.swift */,
 				100E9A85232B6E470018A275 /* ImageCollectionViewCell.swift */,
+				10381895232A709E00531F02 /* ImageGalleryViewController.swift */,
 				10381890232A46C600531F02 /* Supporting Files */,
 				1038188A232A45A700531F02 /* Info.plist */,
-				10381895232A709E00531F02 /* ImageGalleryViewController.swift */,
 			);
 			path = "ImageGallery-Assignment4";
 			sourceTree = "<group>";
