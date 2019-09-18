@@ -40,10 +40,11 @@ class ImageGalleryTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("indexpath.item = \(indexPath.item)")
         if indexPath.section == 0 {
-            let nc = self.splitViewController?.viewControllers[1] as! UINavigationController
-            let igvc = nc.viewControllers[0] as? ImageGalleryViewController
-            igvc?.GalleryImages = galleriesDictionary[indexPath.item]!
-            igvc?.GalleryCollectionView.reloadData()
+            if let nc = self.splitViewController?.viewControllers[1] as? UINavigationController {
+                let igvc = nc.viewControllers[0] as? ImageGalleryViewController
+                igvc?.GalleryImages = galleriesDictionary[indexPath.item]!
+                igvc?.GalleryCollectionView.reloadData()
+            }
         }
     }
     

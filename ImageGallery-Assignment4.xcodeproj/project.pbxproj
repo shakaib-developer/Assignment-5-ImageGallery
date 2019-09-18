@@ -16,6 +16,7 @@
 		10381894232A5E4800531F02 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10381893232A5E4800531F02 /* Utilities.swift */; };
 		10381896232A709E00531F02 /* ImageGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10381895232A709E00531F02 /* ImageGalleryViewController.swift */; };
 		1A7AA15223323C150021B16E /* ImageGalleryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7AA15123323C150021B16E /* ImageGalleryTableViewCell.swift */; };
+		1A7AA156233269CB0021B16E /* ImageZoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7AA155233269CA0021B16E /* ImageZoomViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		10381893232A5E4800531F02 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		10381895232A709E00531F02 /* ImageGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryViewController.swift; sourceTree = "<group>"; };
 		1A7AA15123323C150021B16E /* ImageGalleryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryTableViewCell.swift; sourceTree = "<group>"; };
+		1A7AA155233269CA0021B16E /* ImageZoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		1038187D232A45A500531F02 /* ImageGallery-Assignment4 */ = {
 			isa = PBXGroup;
 			children = (
+				1A7AA155233269CA0021B16E /* ImageZoomViewController.swift */,
 				1A7AA15123323C150021B16E /* ImageGalleryTableViewCell.swift */,
 				10381891232A50A100531F02 /* ImageGalleryTableViewController.swift */,
 				10381882232A45A500531F02 /* Main.storyboard */,
@@ -157,6 +160,7 @@
 			files = (
 				10381894232A5E4800531F02 /* Utilities.swift in Sources */,
 				100E9A86232B6E470018A275 /* ImageCollectionViewCell.swift in Sources */,
+				1A7AA156233269CB0021B16E /* ImageZoomViewController.swift in Sources */,
 				1A7AA15223323C150021B16E /* ImageGalleryTableViewCell.swift in Sources */,
 				10381892232A50A100531F02 /* ImageGalleryTableViewController.swift in Sources */,
 				10381896232A709E00531F02 /* ImageGalleryViewController.swift in Sources */,

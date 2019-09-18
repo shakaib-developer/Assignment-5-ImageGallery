@@ -15,6 +15,15 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
         return GalleryCollectionView?.collectionViewLayout as? UICollectionViewFlowLayout
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        let nc = self.splitViewController?.viewControllers[0] as! UINavigationController
+        let igtvc = nc.viewControllers[0] as? ImageGalleryTableViewController
+        if (igtvc?.tableView.indexPathForSelectedRow) != nil// = self.GalleryImages
+        {
+            igtvc?.tableView.isHidden = false
+        }
+    }
+    
     lazy var cellWidth: CGFloat = view.frame.size.width / 4
     var scale : CGFloat = 1
     @IBAction func PinchGesture(_ sender: UIPinchGestureRecognizer) {
@@ -41,6 +50,41 @@ class ImageGalleryViewController: UIViewController, UICollectionViewDataSource, 
                 igtvc?.galleriesDictionary[indexPath.item] = GalleryImages
             }
         }
+    }
+    
+    var cell: ImageCollectionViewCell!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let c = GalleryCollectionView.indexPathsForSelectedItems?.first
+        {
+            cell = GalleryCollectionView.cellForItem(at: c) as? ImageCollectionViewCell
+            
+            if let cell = cell {
+                if let imageVC = segue.destination.contents as? ImageZoomViewController {
+                    imageVC.image = cell.imageViewInCell.image
+                    
+                    let nc = self.splitViewController?.viewControllers[0] as! UINavigationController
+                    let igtvc = nc.viewControllers[0] as? ImageGalleryTableViewController
+                    if (igtvc?.tableView.indexPathForSelectedRow) != nil// = self.GalleryImages
+                    {
+                        igtvc?.tableView.isHidden = true
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("item at \(indexPath) tapped, segue = ImageZoomViewController")
+
+        cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
+//        let yourViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImageZoomViewController") as! ImageZoomViewController
+//        let cell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell
+//        yourViewController.image = cell?.imageViewInCell.image
+//
+//        self.present(yourViewController, animated: true, completion: nil)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
